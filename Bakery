@@ -1,0 +1,191 @@
+var index = 0; var rating=0;
+var allratings=["","","","","",""];
+var hasRating =["","","","","",""];
+var names = ["Berry Merry Cake","Vanillla Sprinkles Cake","Pink Ombre Cake",
+            "Chocolate Strawberry Cake","Double Fudge Cake","Peanut Butter Cake"];
+var prices = ["22.00","20.00","26.00","22.00","20.00","26.00"];
+var ingredients = ["Vanilla Cake, Strawberries and Roses for decoration",
+                  "Vanilla cake and vanilla buttercream, colorful sprinkles",
+                  "Vanilla buttercream and vanilla cake colored to be ombre",
+                  "Chocolate ckae, strawberries, cholocate glaze",
+                  "Chocolate cake paired with chocolate buttercream",
+                  "Peanut Butter Buttercream, chocolate cake and chocolate glaze"];
+
+//creating data records
+onEvent("sumbitRatingBtn", "click", function( ) {
+  var choice=getText("ratingDropdown");
+  if (choice!=="--choose number of stars--") {
+    readRecords("ratings"+index, {name:choice}, function(records) {
+      if (records.length===0) {
+        createRecord("ratings"+index, {name:choice, count:1}, function() { 
+        });
+      }
+      else {
+        var newCount=records[0].count+1;
+        updateRecord("ratings"+index, {id:records[0].id, name:choice, count:newCount}, function() {
+        });
+      }
+    });
+  } 
+  hasRating[index] = 1;
+  setText("ratingDropdown","--choose number of stars--");
+  updateRating();
+  showElement("thankyouRating");
+});
+
+//main algorithm: setting the screen users see when they click an image
+function setDetailsScreen(index) {
+  setScreen("detailsScreen");
+  hideAllImages();
+  hideStars();
+  updateRating();
+  displayStars();
+  showElement(index+1+"image");
+  setText("title", names[index]);
+  setText("priceLabel", prices[index]);
+  if(index<3){
+    setText("learnMoreBtn", "Learn more about the vanilla cake");
+  }
+  else{
+    setText("learnMoreBtn", "Learn more about the chocolate cake");
+  }
+  rating=0;
+}
+//first subalgorithm
+function updateRating() {
+  if(hasRating[index]==1){
+    readRecords("ratings"+index, {}, function(records) {
+      if (records.length>0){
+        rating = 0;
+        for (var i =0; i < records.length; i++) {
+          rating = rating + (records[i].name)*records[i].count;
+        }
+        var numberOfRates = 0;
+        for (var j =0; j < records.length; j++) {
+          numberOfRates = numberOfRates + records[j].count;
+        }
+        rating = rating/numberOfRates;
+        allratings[index] = rating;
+      }
+  });
+  }
+}
+//second subalgorithm
+function displayStars(){
+  if(hasRating[index]==1){
+    hideStars();
+    if(rating>0){showElement("star1.1");}
+    if(rating>(1/2)){showElement("star1.2");}
+    if(rating>1){showElement("star1.2");}
+    if(rating>(3/2)){showElement("star2.1");}
+    if(rating>2){showElement("star3.1");}
+    if(rating>(5/2)){showElement("star3.2");}
+    if (rating>3){showElement("star4.1");}
+    if(rating>(7/2)){showElement("star4.2");}
+    if (rating>4){showElement("star5.1");}
+    if(rating>(9/2)){showElement("star5.2");}
+  }
+}
+function hideStars(){
+  for (var i = 1; i < 6; i++) {
+    hideElement("star"+i+".1"); hideElement("star"+i+".2");
+  }
+}
+function hideAllImages(){
+  for (var i = 1; i < 7; i++) {
+    hideElement(i+"image");
+  }
+}
+
+//creating the graph with all the ratings
+onEvent("veiwAllRatingsBtn", "click", function( ) {
+  setScreen("graphOfRatingsScreen");
+  hideElement("chart1");
+  hideElement("noratingsLabel");
+  setText("breakdownTitle", "Breakdown of all the ratings for "+names[index]);
+  if (hasRating[index]==1){
+    showElement("chart1");
+    drawChartFromRecords("chart1", "bar", "ratings"+index, ["name", "count"]);
+  }
+  else{
+    showElement("noratingsLabel");
+  }
+});
+
+//making buttons lead to new screens
+onEvent("vcakesBtn", "click", function( ) {
+  setScreen("vcakesScreen");
+});
+onEvent("ccakesBtn", "click", function( ) {
+  setScreen("ccakesScreen");
+});
+onEvent("ratingBtn", "click", function( ) {
+  setScreen("ratingtheCakeScreen");
+  setText("ratingTitle", "Rate the " +names[index]);
+  hideElement("thankyouRating");
+});
+onEvent("learnMoreBtn", "click", function( ) {
+  setScreen("learnMoreScreen");
+  setText("displayIngredients", ingredients[index]);
+  if(index<3){setText("displayType", "Vanilla Cake");}
+  else{setText("displayType", "Chocolate Cake");}
+});
+
+//leading to the details creen
+onEvent("berryCake", "click", function( ) {
+  index = 0; setDetailsScreen(index);
+});
+onEvent("vanillaSprinkles", "click", function( ) {
+  index = 1; setDetailsScreen(index);
+});
+onEvent("pinkOmbre", "click", function( ) {
+  index = 2; setDetailsScreen(index);
+});
+onEvent("chocoStrawberry", "click", function( ) {
+  index = 3; setDetailsScreen(index);
+});
+onEvent("doubleFudge", "click", function( ) {
+  index = 4; setDetailsScreen(index);
+});
+onEvent("peanutButter", "click", function( ) {
+  index = 5; setDetailsScreen(index);
+});
+
+//making the back button work
+onEvent("backarrow", "click", function( ) {
+  if(index<3){setScreen("vcakesScreen");}
+  else{setScreen("ccakesScreen");}
+});
+onEvent("backarrow1", "click", function( ) {
+  setScreen("welcomeScreen");
+});
+onEvent("backarrow2", "click", function( ) {
+  setScreen("welcomeScreen");
+});
+onEvent("backarrow5", "click", function( ) {
+  setDetailsScreen(index);
+});
+onEvent("backarrow3", "click", function( ) {
+  setDetailsScreen(index);
+});
+onEvent("backarrow4", "click", function( ) {
+  setDetailsScreen(index);
+});
+//making home button work
+onEvent("homebtn", "click", function( ) {
+  setScreen("welcomeScreen");
+});
+onEvent("homebtn2", "click", function( ) {
+  setScreen("welcomeScreen");
+});
+
+//Images of the cakes: 
+  //https://weddingcakeswallpapers.com/wp-content/uploads/2018/12/Spectacular-For-Your-Natural-Wedding-Cake-Recipes-Top-of-wedding-cake-ideas.jpg
+  //https://livforcake.com/wp-content/uploads/2017/06/vanilla-cake-6.jpg
+  //https://blog.williams-sonoma.com/wp-content/uploads/2018/06/jun-23-Vanilla-Ombre-Layer-Cake.jpg
+  //http://designbyoccasion.com/wp-content/uploads/2016/07/STRAWBERRY-CHOCOLATE-CAKE.jpg
+  //https://img1.southernliving.timeinc.net/sites/default/files/styles/4_3_horizontal_-_1200x900/public/image/2017/12/main/2552101_saver_020_0_0_1.jpg?itok=Jawv6QyI
+  //https://i2.wp.com/dishesanddustbunnies.com/wp-content/uploads/2017/02/Peanut-Butter-Chocolate-Cake3.jpg?resize=600%2C900&ssl=1
+//Image for home button: https://cdn4.iconfinder.com/data/icons/game-interface-outline/100/objects-02-512.png
+//Image for back button: https://image.flaticon.com/icons/png/512/93/93634.png
+//Image for the emoji: https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/81/drooling-face_1f924.png
