@@ -1,0 +1,24 @@
+//Interactive Study Guide - a demo for club memebers
+
+onEvent("leftSolution", "click", function( ) {
+  setText("text_area1", "left solution");
+});
+onEvent("rightSolution", "click", function( ) {
+  setText("text_area1", "right solution");
+});
+onEvent("anode", "click", function( ) {
+  setText("text_area1", "anode");
+});
+onEvent("cathode", "click", function( ) {
+  setText("text_area1", "cathode");
+});
+onEvent("voltmeter", "click", function( ) {
+  setText("text_area1", "voltmeter");
+});
+onEvent("unlabeledSetup", "click", function( ) {
+  setText("text_area1", "background");
+});
+onEvent("saltBridge", "click", function(){
+  setText("text_area1","salt bridge");
+});
+
