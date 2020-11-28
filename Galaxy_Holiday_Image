@@ -1,0 +1,319 @@
+drawBackground();
+drawAllstar();
+drawAllGalaxy();
+drawObservatory();
+drawGround();
+drawAllTrees();
+Writing();
+drawComets();
+
+//draws background
+function drawBackground() {
+  penRGB(15, 5, 50, 1);
+  dot(300);
+  drawStripe();
+  drawAllTexture();  
+}
+//Draws three soft orbs that outlines where the rest of the texture will go
+function drawStripe() {
+  moveTo(160, 200);
+  drawBlob(0,75);
+  drawBlob(85,50);
+  drawBlob(170,50);
+}
+//Draws all the texture
+function drawAllTexture() {
+  for (var i = 0; i < 7; i++) {
+    drawTexture(randomNumber(50,270), randomNumber(10,15),randomNumber(40,50), randomNumber(40,50), randomNumber(95,105));
+    drawTexture(randomNumber(50,270), randomNumber(10,15),randomNumber(230,240), randomNumber(230,240), randomNumber(230,240));
+    drawTexture(randomNumber(120,200), randomNumber(10,15),randomNumber(125,175), randomNumber(100,115), randomNumber(200,225));
+  }
+  for (var l = 0; l < 5; l++) {
+    drawTexture(randomNumber(50,270), randomNumber(10,15),randomNumber(125,175), randomNumber(100,115), randomNumber(200,225));
+  }
+  for (var m = 0; m < 5; m++) {
+    drawTexture(randomNumber(120,200), randomNumber(5,20),randomNumber(230,240), randomNumber(230,240), randomNumber(230,240));
+  }
+}
+
+//Draws a single circle that gradients into the background color
+function drawBlob(moveLength, radius){
+  penUp();
+ for (var i = 0; i < 2; i++) {
+    turnLeft(90);
+    moveForward(moveLength);
+  } 
+  for (var k = 0; k < radius/2; k++) {
+    penRGB(15+k*2,5+k*2,50+k*2);
+    dot(radius-k*2);
+  }
+}
+//Draws a small orb of color that gradients out
+function drawTexture(x,size,r,g,b) {
+  moveTo(x,randomNumber(320-(x-75),320-(x)));
+  for (var j = 0; j < size; j++) {
+    penRGB(r,g,b, j*0.01);
+    dot(size-j);
+  }
+}
+//Draws all 200 stars
+function drawAllstar() {
+  for (var i = 0; i < 75; i++) {
+    moveTo(randomNumber(0, 320), randomNumber(0, 400));
+    drawStar(randomNumber(1, 1.75));
+  }
+}
+//Function drawStar each about 1-2 pixels in demensions.
+function drawStar(size) {
+  penDown();
+  penRGB(255, 255, 255, 1);
+  for (var i = 0; i < 5; i++) {
+    moveForward(size);
+    turnRight(70);
+  }
+  penUp();
+}
+//Draws 4 galaxies
+function drawAllGalaxy() {
+  for (var i = 0; i < 4; i++) {
+    moveTo(randomNumber(10, 300), randomNumber(10, 400));
+    drawGalaxy(randomNumber(150, 255), randomNumber(150, 255), randomNumber(150, 255));
+  }
+}
+//Draws 4 varying colored circles of varying opacity.
+function drawGalaxy(r, g, b) {
+  penDown();
+  penRGB(r, g, b, 1);
+  dot(1.5);
+  penRGB(r, g, b,0.75);
+  dot(3);
+  penRGB(r, g, b,0.251);
+  dot(6);
+  penRGB(r, g, b, 0.125);
+  dot(9);
+  penUp();
+}
+//Function drawObservatory two thick lines resembeling an observatory done by Carson Musser
+function drawObservatory() {
+  penUp();
+  penColor("black");
+  turnTo(0);
+  penWidth(75);
+  moveTo(150, 415);
+  penDown();
+  moveForward(20);
+  turnTo(330);
+  penWidth(30);
+  moveForward(60);
+  penUp();
+}
+//Draws two comets
+function drawComets() {
+  penUp;
+  moveTo(50,80);
+  penDown;
+  drawComet();
+  penUp;
+  moveTo(105,125);
+  penDown;
+  drawSecondComet();
+}
+//Draws the body of the first comet
+function drawComet() {
+  for (var i = 0; i < 15; i++) {
+    penRGB(15+i*10,5+i*10,50+i*10);
+    dot(20-i);}
+    drawCometTrails();
+}
+//Draws the body of the second comet
+function drawSecondComet() {
+  for (var i = 0; i < 15; i++) {
+    penRGB(15+i*10,5+i*10,50+i*10);
+    dot(20-i);}
+    drawSecondCometTrails();
+}
+//Function defining Comet Trails for first comet
+function drawCometTrails(){
+ for (var i = 0; i < 35; i++) {
+      moveTo(50,80);
+      turnTo(randomNumber(50,70));
+      cometTrail(randomNumber(30,150));
+    }
+}
+//Function defining Comet Trails for second comet
+function drawSecondCometTrails(){
+ for (var i = 0; i < 35; i++) {
+      moveTo(105,125);
+      turnTo(randomNumber(50,70));
+      cometTrail(randomNumber(30,150));
+    }
+}
+
+//Draws a single comet trail
+function cometTrail(size){
+  penDown();
+  penWidth(randomNumber(1,15));
+  penRGB(255,255,255,0.1);
+  moveForward(size);
+  penUp();
+}
+//Draws the ground- moves turtle offscreen then makes a dot
+function drawGround(){
+  penUp();
+  moveTo(156,920);
+  penDown();
+  penWidth(20);
+  penRGB(0, 2, 0, 1);
+  dot(500);
+}
+// Drawing the trees. Uses a loop to draw all the trees
+function drawAllTrees() {
+  for (var i = 0; i < 5; i++) {
+  moveTo(randomNumber(21,300 ), (randomNumber(444,448)));
+  penDown();
+  drawTree();
+} 
+}
+//Function for drawing a tree. Creates trunk, then branches, then dots for the leaves.
+function drawTree() {
+  penWidth(15);
+  penRGB(0, 2, 0, 1);
+  turnTo(0);
+  moveForward(50);
+  turnRight(90);
+  moveForward(20);
+  dot(15);
+  turnLeft(180);
+  moveForward(40);
+  dot(15);
+  turnRight(180);
+  moveForward(20);
+  turnTo(0);
+  moveForward(20);
+  dot(25);
+  penUp();
+}
+
+//Alberto "Happy Holidays!"
+function Writing(){
+  hide();
+  penUp();
+  penRGB(255,255,255,1);
+  moveTo(160, 240);
+  turnTo(0);
+  letterH(25,300);
+  letterA(65,338);
+  letterP(105,338);
+  turnRight(180);
+  letterP(145,338);
+  turnRight(180);
+  letterY(185,325);
+  turnRight(180);
+  letterH(65,380);
+  turnRight(180);
+  letterO(105,420);
+  letterL(145,385);
+  letterI(160,385);
+  turnRight(180);
+  letterP(200,420);
+  turnRight(180);
+  letterA(215,420);
+  letterY(255,408);
+  turnRight(103);
+  letterS(300,408);
+  penUp();
+
+function letterH(x,y) {
+  penUp();
+  moveTo(x, y);
+  penWidth(7);
+  penDown();
+  moveBackward(50);
+  penUp();
+  moveForward(25);
+  penDown();
+  turnRight();
+  moveForward(25);
+  penUp();
+  turnLeft();
+  moveForward();
+  turnRight(180);
+  penDown();
+  moveForward(50);
+}
+function letterA(x,y){
+  penUp();
+  moveTo(x,y);
+  penDown();
+  for (var i = 0; i < 4; i++) {
+    arcLeft(90,12.5);
+  }
+  penUp();
+  moveForward(12.5);
+  turnLeft();
+  moveForward(25);
+  turnLeft();
+  penDown();
+  moveForward(25);
+}
+
+function letterP(x,y){
+  penUp();
+  moveTo(x,y);
+  penDown();
+  for (var i = 0; i < 4; i++) {
+    arcRight(90,12.5);
+  }
+  penUp();
+  moveForward(12.5);
+  turnRight(180);
+  penDown();
+  moveForward(50);
+}
+function letterY(x,y){
+  penUp();
+  moveTo(x,y);
+  penDown();
+  turnRight(160);
+  moveForward(30);
+  turnLeft(140);
+  moveForward(30);
+  turnRight(180);
+  moveForward(55);
+  turnLeft(20);
+}
+function letterO(x,y){
+  penUp();
+  moveTo(x,y);
+  penDown();
+  for (var i = 0; i < 4; i++) {
+    arcRight(90,12.5);
+  }
+}
+function letterL(x,y){
+  penUp();
+  moveTo(x,y);
+  penDown();
+  moveBackward(48);
+}
+function letterI(x,y){
+  penUp();
+  moveTo(x,y);
+  moveBackward(6);
+  penDown();
+  moveBackward(1);
+  penUp();
+  moveBackward(10);
+  penDown();
+  moveBackward(31);
+}
+function letterS(x,y){
+  penUp();
+  moveTo(x,y);
+  penWidth(7);
+  penDown();
+  arcLeft(180, 7);
+  arcRight(190, 7);
+  }
+}
+
